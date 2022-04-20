@@ -10,7 +10,7 @@ const Main = () => {
             <div className={s.mainContainer}>
                 {
                     initialState.map(b => {
-                            return <Board id={b.id} boardName={b.boardName} cards={b.cards}/>
+                            return <Board boardId={b.boardId} boardName={b.boardName} cards={b.cards}/>
                         }
                     )
                 }
