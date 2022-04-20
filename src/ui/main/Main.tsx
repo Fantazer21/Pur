@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './styles.module.css'
 import Board from "../board/Board";
-import {initialState} from "../../bll/store";
+import { initialState } from "../../bll/store";
 
 
 const Main = () => {

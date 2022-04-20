@@ -5,6 +5,8 @@ type HeaderPropsType = {
     name: string
 }
 
+
+
 function Header(props: HeaderPropsType) {
     return (
         <div className={s.header}>
