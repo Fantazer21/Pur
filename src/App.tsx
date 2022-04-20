@@ -4,6 +4,7 @@ import Header from './ui/header/Header';
 import Main from "./ui/main/Main";
 import ModalGreeting from "./ui/modals/modalGreeting/modalGreeting";
 import {userLocStor} from "./dal/userLocStor";
+import {BoardLocStor} from "./dal/boardLocStor";
 
 function App() {
     const [registrationName, setRegistrationName] = useState('')
@@ -22,6 +23,10 @@ function App() {
     }
     useEffect(() => {
         getUserName()
+    }, [])
+
+    useEffect(() => {
+        const boards = BoardLocStor.getBoards()
     }, [])
 
     return (

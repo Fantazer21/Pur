@@ -22,26 +22,3 @@ export const cardsStore: CardType[] = [
 },
 ]
 
-
-export const initialState: BoardType[] = [
-    {
-        boardId: 1,
-        boardName: "TO DO",
-        cards: []
-    },
-    {
-        boardId: 2,
-        boardName: "In Progress",
-        cards: []
-    },
-    {
-        boardId: 3,
-        boardName: "Testing",
-        cards: []
-    },
-    {
-        boardId: 4,
-        boardName: "Done",
-        cards: []
-    },
-]
