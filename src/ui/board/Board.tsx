@@ -16,20 +16,29 @@ const Board = (props: BoardPropsType) => {
     const [toggle, setToggle] = useState(false)
     const {setNewStateBoards}: any = useContext(Context)
 
+    const setName = (val: string, boardName: string) => {
+        setNameBoard(boardName)
+        setNameBoard(val)
+    }
 
+    const outSideClick = (boardId: number, brName: string) => {
+        if (nameBoard == '') {
+            setNewStateBoards(boardId, brName)
+        } else  setNewStateBoards(props.boardId, nameBoard)
+        setToggle(false)
+    };
     return (
         <div className={s.board}>
             {!toggle ?
+
                 <h3 onClick={() => setToggle(true)}>{props.boardName}</h3>
                 :
                 <OutsideClickHandler
-                    onOutsideClick={() => {
-                        setToggle(false)
-                        setNewStateBoards(props.boardId, nameBoard)
-                    }
-                    }
+                    onOutsideClick={() => outSideClick(props.boardId, props.boardName, ) }
                 >
-                    <input onChange={(e) => setNameBoard(e.currentTarget.value)}
+                    <input  onChange={(e) =>
+                          setName(e.currentTarget.value, props.boardName)
+                    }
                            className={s.input}
                            placeholder={props.boardName}/>
                 </OutsideClickHandler>
