@@ -9,7 +9,7 @@ export const Context = React.createContext({})
 
 const Main = () => {
 
-    const [inState, setInState] = useState <BoardType[]>([
+    const [inState, setInState] = useState<BoardType[]>([
         {
             boardId: 1,
             boardName: "TO DO",
@@ -39,12 +39,12 @@ const Main = () => {
             }
             return el
         })
-          setInState(newArr)
-        BoardLocStor.setBoards('boards',newArr)
+        setInState(newArr)
+        BoardLocStor.setBoards('boards', newArr)
     }
 
-    const getBoards =  () => {
-        const board =  BoardLocStor.getBoards()
+    const getBoards = () => {
+        const board = BoardLocStor.getBoards()
         if (board) {
             setInState(board)
         }
@@ -52,7 +52,6 @@ const Main = () => {
     useEffect(() => {
         getBoards()
     }, [])
-
 
 
     return (
@@ -64,14 +63,13 @@ const Main = () => {
                     {
                         inState.map((b, i) => {
                                 return <Board key={i}
-                                    boardId={b.boardId}
+                                              boardId={b.boardId}
                                               boardName={b.boardName}
                                               cards={b.cards}
                                 />
                             }
                         )
                     }
-
                 </div>
             </div>
         </Context.Provider>

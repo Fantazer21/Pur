@@ -10,7 +10,7 @@ const Card = (props: CardType) => {
           <div className={s.comment}>{props.nameCard}</div>
             <div className={s.commentWrapper}>
                 <img src={comment} width={15} alt='comment'/>
-                <div>12</div>
+                <div>{props.commentCard.length}</div>
             </div>
         </div>
     );

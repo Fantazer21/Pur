@@ -9,16 +9,7 @@ export type CardType = {
     boardId: 1 | 2 | 3 | 4 ,
     nameCard: string,
     descriptionCard: string,
-    commentCard: string,
+    commentCard: Array<string>,
 }
 
-export const cardsStore: CardType[] = [
-    {
-    id: 1,
-    boardId: 2,
-    nameCard: "Name Card",
-    descriptionCard: "descriptionCard",
-    commentCard: 'Comment card'
-},
-]
 
