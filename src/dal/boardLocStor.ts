@@ -12,7 +12,7 @@ export const BoardLocStor: BoardLocStorType = {
     getBoards() {
         const serializedState = localStorage.getItem('boards')
         if (serializedState === null) {
-            return []
+            return undefined
         }
         return JSON.parse(serializedState)
     }
