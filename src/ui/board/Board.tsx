@@ -79,8 +79,8 @@ const Board = (props: BoardPropsType) => {
         }
     }
 
-    const setChooseCard = (id: number, boardId: number) => {
-        const findResult = cardsStore.find(c => c.id === +id && +boardId === c.boardId)
+    const setChooseCard = (store: CardType[],id: number, boardId: number) => {
+        const findResult = store.find(c => c.id === +id && +boardId === c.boardId)
         if (findResult) {
             setCurrentCard(findResult)
         }
@@ -95,17 +95,6 @@ const Board = (props: BoardPropsType) => {
 
     const editTitle = (id: number, boardId: number, newNameCard: string) => {
 
-        //        const newArr = inState.map(el => {
-        //             if (el.boardId === boardId) {
-        //                 return {...el, boardName: newName}
-        //             }
-        //             return el
-        //         })
-        //         setInState(newArr)
-
-
-
-
         console.log(id, boardId, newNameCard)
          const newSt = cardsStore.map(c => {
              if (c.id === +id && +boardId === c.boardId) {
@@ -114,6 +103,7 @@ const Board = (props: BoardPropsType) => {
              return c
          })
              setCardsStore(newSt)
+        setChooseCard(newSt, id, boardId)
     }
 
     useEffect(() => {
@@ -148,7 +138,7 @@ const Board = (props: BoardPropsType) => {
                                              commentCard={card.commentCard}
                                              descriptionCard={card.descriptionCard}
                                              setOpenCLoseModalEditor={setOpenCLoseModalEditor}
-                                             setChooseCard={setChooseCard}
+                                             setChooseCard={() => setChooseCard(cardsStore, card.id, props.boardId)}
                                 />
                         }
                     )
