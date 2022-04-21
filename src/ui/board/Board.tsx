@@ -4,6 +4,7 @@ import Card from "../card/Card";
 import OutsideClickHandler from 'react-outside-click-handler'
 import {Context} from "../main/Main";
 import {CardsLocStor} from "../../dal/cardsLocStor";
+import ModalCardEditor from "../modals/modalCardEditor/ModalCardEditor";
 
 type BoardPropsType = {
     boardId: 1 | 2 | 3 | 4
@@ -33,6 +34,8 @@ const Board = (props: BoardPropsType) => {
     const [nameCard, setNameCard] = useState('')
     const [toggle, setToggle] = useState(false)
     const [createCardStatus, setCreateCardStatus] = useState(false)
+    const [openCLoseModalEditor, setOpenCLoseModalEditor] = useState(false)
+    const [currentCard, setCurrentCard] = useState<CardType | null>(null)
 
     const {setNewStateBoards}: any = useContext(Context)
 
@@ -48,7 +51,7 @@ const Board = (props: BoardPropsType) => {
         setToggle(false)
     };
 
-    const createNewCard = ( boardId: 1 | 2 | 3 | 4) => {
+    const createNewCard = (boardId: 1 | 2 | 3 | 4) => {
 
         const newCard = {
             id: +cardsStore.length + 1,
@@ -59,14 +62,14 @@ const Board = (props: BoardPropsType) => {
         }
 
         if (nameCard == '') {
-             setCardsStore(cardsStore)
+            setCardsStore(cardsStore)
         } else {
             const newArr: any = [...cardsStore, newCard]
             setCardsStore(newArr)
             setNameCard('')
-            CardsLocStor.setCards('cards',newArr)
+            CardsLocStor.setCards('cards', newArr)
         }
-         setCreateCardStatus(false)
+        setCreateCardStatus(false)
     }
 
     const getCards = () => {
@@ -75,6 +78,44 @@ const Board = (props: BoardPropsType) => {
             setCardsStore(cards)
         }
     }
+
+    const setChooseCard = (id: number, boardId: number) => {
+        const findResult = cardsStore.find(c => c.id === +id && +boardId === c.boardId)
+        if (findResult) {
+            setCurrentCard(findResult)
+        }
+    }
+
+    const removeCard = (id: number, boardId: number) => {
+        const findResult = cardsStore.filter(c => c.id !== +id && +boardId === c.boardId)
+        if (findResult) {
+            setCardsStore(findResult)
+        }
+    }
+
+    const editTitle = (id: number, boardId: number, newNameCard: string) => {
+
+        //        const newArr = inState.map(el => {
+        //             if (el.boardId === boardId) {
+        //                 return {...el, boardName: newName}
+        //             }
+        //             return el
+        //         })
+        //         setInState(newArr)
+
+
+
+
+        console.log(id, boardId, newNameCard)
+         const newSt = cardsStore.map(c => {
+             if (c.id === +id && +boardId === c.boardId) {
+                 return {...c, nameCard: newNameCard}
+             }
+             return c
+         })
+             setCardsStore(newSt)
+    }
+
     useEffect(() => {
         getCards()
     }, [])
@@ -96,7 +137,6 @@ const Board = (props: BoardPropsType) => {
                 </OutsideClickHandler>
 
             }
-            {/*{createCardStatus ? <ModalCardEditor/> : null}*/}
             <div className={s.cardsList}>
                 {
                     cardsStore.map((card: CardType, i) => {
@@ -107,6 +147,8 @@ const Board = (props: BoardPropsType) => {
                                              nameCard={card.nameCard}
                                              commentCard={card.commentCard}
                                              descriptionCard={card.descriptionCard}
+                                             setOpenCLoseModalEditor={setOpenCLoseModalEditor}
+                                             setChooseCard={setChooseCard}
                                 />
                         }
                     )
@@ -120,6 +162,12 @@ const Board = (props: BoardPropsType) => {
                     }
                            className={s.input}/>
                 </OutsideClickHandler>
+            }
+            {openCLoseModalEditor && <ModalCardEditor
+                editTitle={editTitle}
+                removeCard={removeCard}
+                 chooseCard={currentCard}
+                setOpenCLoseModalEditor={setOpenCLoseModalEditor}/>
             }
         </div>
     );
