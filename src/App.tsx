@@ -23,10 +23,6 @@ function App() {
         getUserName()
     }, [])
 
-    // useEffect(() => {
-    //     const boards = BoardLocStor.getBoards()
-    // }, [])
-
     return (
         <div className="App">
             <Header name={registrationName}/>

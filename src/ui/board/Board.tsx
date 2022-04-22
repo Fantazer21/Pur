@@ -27,6 +27,20 @@ const Board = (props: BoardPropsType) => {
             boardId: 2,
             nameCard: "Name Card",
             descriptionCard: "descriptionCard",
+            commentCard: ['Comment card', 'New comment2', 'New comment3']
+        },
+        {
+            id: 2,
+            boardId: 1,
+            nameCard: "Name Card",
+            descriptionCard: "descriptionCard",
+            commentCard: ['Comment card', 'New comment2', 'New comment3', 'New comment4']
+        },
+        {
+            id: 3,
+            boardId: 3,
+            nameCard: "Name Card",
+            descriptionCard: "descriptionCard",
             commentCard: ['Comment card']
         },
     ])
@@ -58,7 +72,7 @@ const Board = (props: BoardPropsType) => {
             boardId: boardId,
             nameCard: nameCard,
             descriptionCard: 'New descriptionCard',
-            commentCard: ['New comment']
+            commentCard: ['New comment1']
         }
 
         if (nameCard == '') {
@@ -79,7 +93,7 @@ const Board = (props: BoardPropsType) => {
         }
     }
 
-    const setChooseCard = (store: CardType[],id: number, boardId: number) => {
+    const setChooseCard = (store: CardType[], id: number, boardId: number) => {
         const findResult = store.find(c => c.id === +id && +boardId === c.boardId)
         if (findResult) {
             setCurrentCard(findResult)
@@ -94,17 +108,60 @@ const Board = (props: BoardPropsType) => {
     }
 
     const editTitle = (id: number, boardId: number, newNameCard: string) => {
-
-        console.log(id, boardId, newNameCard)
-         const newSt = cardsStore.map(c => {
-             if (c.id === +id && +boardId === c.boardId) {
-                 return {...c, nameCard: newNameCard}
-             }
-             return c
-         })
-             setCardsStore(newSt)
+        const newSt = cardsStore.map(c => {
+            if (c.id === +id && +boardId === c.boardId) {
+                return {...c, nameCard: newNameCard}
+            }
+            return c
+        })
+        setCardsStore(newSt)
         setChooseCard(newSt, id, boardId)
     }
+
+    const editDescription = (id: number, boardId: number, newDescription: string) => {
+        const newSt = cardsStore.map(c => {
+            if (c.id === +id && +boardId === c.boardId) {
+                return {...c, descriptionCard: newDescription}
+            }
+            return c
+        })
+        setCardsStore(newSt)
+        setChooseCard(newSt, id, boardId)
+    }
+
+    const editComment = (id: number, boardId: number, newComment: string, commentNumber: number) => {
+        const newSt = cardsStore.map(c => {
+            if (c.id === +id && +boardId === c.boardId) {
+                return {
+                    ...c,
+                    commentCard: c.commentCard.map((el, ind) => {
+                        if (ind === commentNumber) {
+                            return newComment
+                        }
+                        return el
+                    })
+                }
+            }
+            return c
+        })
+        setCardsStore(newSt)
+        setChooseCard(newSt, id, boardId)
+    }
+
+    const removeComment = (id: number, boardId: number, commentNumber: number) => {
+        const newSt = cardsStore.map(c => {
+            if (c.id === +id && +boardId === c.boardId) {
+                return {
+                    ...c,
+                    commentCard: c.commentCard.filter((el, ind) => ind !== commentNumber )
+                }
+            }
+            return c
+        })
+        setCardsStore(newSt)
+        setChooseCard(newSt, id, boardId)
+    }
+
 
     useEffect(() => {
         getCards()
@@ -154,9 +211,16 @@ const Board = (props: BoardPropsType) => {
                 </OutsideClickHandler>
             }
             {openCLoseModalEditor && <ModalCardEditor
+                editDescription={editDescription}
+                removeComment={removeComment}
+                cardsStore={cardsStore}
+                boardId={props.boardId}
+                boardName={props.boardName}
+                openCLoseModalEditor={openCLoseModalEditor}
                 editTitle={editTitle}
                 removeCard={removeCard}
-                 chooseCard={currentCard}
+                chooseCard={currentCard}
+                editComment={editComment}
                 setOpenCLoseModalEditor={setOpenCLoseModalEditor}/>
             }
         </div>
