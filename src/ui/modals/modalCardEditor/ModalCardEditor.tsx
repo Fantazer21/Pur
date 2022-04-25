@@ -4,10 +4,6 @@ import cross from './cross.svg'
 import OutsideClickHandler from "react-outside-click-handler";
 import {userLocStor} from "../../../dal/userLocStor";
 
-
-// Как пользователь, я должен иметь возможность добавить/изменить/удалить комментарий.
-
-
 const ModalCardEditor = (props: any) => {
     const [registrationName, setRegistrationName] = useState('')
     const [editTitle, setEditTitle] = useState(false)
@@ -16,6 +12,7 @@ const ModalCardEditor = (props: any) => {
 
     const [editComment, setEditComment] = useState(321321)
     const [newComment, setNewComment] = useState('')
+    const [editCommentStatus, setEditCommentStatus] = useState(false)
 
     const [newNameCard, setNewNameCard] = useState('')
 
@@ -29,8 +26,6 @@ const ModalCardEditor = (props: any) => {
     useEffect(() => {
         getUserName()
     }, [])
-    console.log(props.cardsStore.find((c: any) => c.boardId === props.boardId).commentCard)
-
     return (
         <div className={s.modalCardEditor}>
             <div className={s.modalContent}>
@@ -84,33 +79,41 @@ const ModalCardEditor = (props: any) => {
                     <div className={s.commentsSection}>
                         <div className={s.commentTitle}>Comments :</div>
                         <div className={s.arrComments}>
-
                             {
                                 props.cardsStore.find((c: any) => c.boardId === props.boardId).commentCard.map((comment: string, ind: number) => {
-                                    return editComment === ind ?
-                                        <OutsideClickHandler
-                                            onOutsideClick={() => {
-                                                if (newComment === '') {
-                                                    setNewComment(comment)
-                                                    props.editComment(props.chooseCard.id, props.chooseCard.boardId, comment, ind)
-                                                    setEditComment(4324234324)
-                                                } else {
-                                                    props.editComment(props.chooseCard.id, props.chooseCard.boardId, newComment, ind)
-                                                    setEditComment(4324234324)
-                                                    setNewComment('')
-                                                }
-                                                setNewComment('')
-                                            }}>
+                                    return editComment === ind && editCommentStatus
+                                        ?
+                                        <OutsideClickHandler key={ind}
+                                                             onOutsideClick={() => {
+                                                                 if (newComment === '') {
+                                                                     setNewComment(comment)
+                                                                     props.editComment(props.chooseCard.id, props.chooseCard.boardId, comment, ind)
+                                                                     setEditComment(4324234324)
+                                                                 } else {
+                                                                     props.editComment(props.chooseCard.id, props.chooseCard.boardId, newComment, ind)
+                                                                     setEditComment(4324234324)
+                                                                     setNewComment('')
+                                                                 }
+                                                                 setEditCommentStatus(false)
+                                                                 setNewComment('')
+                                                             }}>
                                             <input onChange={(e) => {
                                                 setNewComment(e.currentTarget.value)
                                             }
                                             }
                                                    className={s.inputTitle}/>
-                                        </OutsideClickHandler> :
-                                        <div key={ind} className={s.comment} onClick={() => setEditComment(ind)}>
+                                        </OutsideClickHandler>
+                                        :
+                                        <div key={ind} className={s.comment} onClick={() => {
+                                            setEditCommentStatus(false)
+                                            setEditComment(ind)
+                                        }}>
                                             {ind + 1}) {comment}
                                             <button
-                                                onClick={() => props.removeComment(props.chooseCard.id, props.chooseCard.boardId, ind)}>remove
+                                                onClick={() => {
+                                                    console.log('haha')
+                                                    props.removeComment(props.chooseCard.id, props.chooseCard.boardId, ind)
+                                                }}>remove
                                             </button>
                                         </div>
                                 })
@@ -118,8 +121,6 @@ const ModalCardEditor = (props: any) => {
                         </div>
                     </div>
                     <div>
-                        {/*<input type='text'  className={s.input} onChange={(e) => setName(e.currentTarget.value)}/>*/}
-                        {/*<button className={s.button} onClick={() => props.setUser(name)}>SAVE</button>*/}
                     </div>
                     <div className={s.deleteSection}>
                         <div>
@@ -140,6 +141,5 @@ const ModalCardEditor = (props: any) => {
         </div>
     );
 };
-//onClick={() => props.editComment(props.chooseCard.id, props.chooseCard.boardId,'hahaha', ind)}
 
 export default React.memo(ModalCardEditor);

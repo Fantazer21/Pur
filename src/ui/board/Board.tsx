@@ -105,6 +105,7 @@ const Board = (props: BoardPropsType) => {
         if (findResult) {
             setCardsStore(findResult)
         }
+        CardsLocStor.setCards('cards', findResult)
     }
 
     const editTitle = (id: number, boardId: number, newNameCard: string) => {
@@ -116,6 +117,7 @@ const Board = (props: BoardPropsType) => {
         })
         setCardsStore(newSt)
         setChooseCard(newSt, id, boardId)
+        CardsLocStor.setCards('cards', newSt)
     }
 
     const editDescription = (id: number, boardId: number, newDescription: string) => {
@@ -127,6 +129,7 @@ const Board = (props: BoardPropsType) => {
         })
         setCardsStore(newSt)
         setChooseCard(newSt, id, boardId)
+        CardsLocStor.setCards('cards', newSt)
     }
 
     const editComment = (id: number, boardId: number, newComment: string, commentNumber: number) => {
@@ -146,6 +149,7 @@ const Board = (props: BoardPropsType) => {
         })
         setCardsStore(newSt)
         setChooseCard(newSt, id, boardId)
+        CardsLocStor.setCards('cards', newSt)
     }
 
     const removeComment = (id: number, boardId: number, commentNumber: number) => {
@@ -153,15 +157,15 @@ const Board = (props: BoardPropsType) => {
             if (c.id === +id && +boardId === c.boardId) {
                 return {
                     ...c,
-                    commentCard: c.commentCard.filter((el, ind) => ind !== commentNumber )
+                    commentCard: c.commentCard.filter((el, ind) => ind !== commentNumber)
                 }
             }
             return c
         })
         setCardsStore(newSt)
         setChooseCard(newSt, id, boardId)
+        CardsLocStor.setCards('cards', newSt)
     }
-
 
     useEffect(() => {
         getCards()
